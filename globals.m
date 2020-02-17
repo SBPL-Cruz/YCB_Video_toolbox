@@ -1,6 +1,7 @@
+
 function opt = globals()
 
-opt.root = '/home/yuxiang/mnt1/yuxiang/YCB_Video_Dataset';
+opt.root = '/media/aditya/A69AFABA9AFA85D9/Datasets/YCB_Video_Dataset/';
 opt.num_classes = 21;
 
 opt.seq_num = 92;

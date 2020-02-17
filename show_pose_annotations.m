@@ -124,7 +124,13 @@ for k = 1:num_frames
         % projection
         x3d = models{object.cls_indexes(ind)}.v';
         x2d = project(x3d, intrinsic_matrix_color, RT_o2c);
-        
+        x3dp = project3d(x3d, RT_o2c);
+        x = x3dp(1,:);
+        y = x3dp(2,:);
+        z = x3dp(3,:);
+
+        [rotmat,cornerpoints,volume,surface] = minboundbox(x,y,z,'v',1);
+        % disp(x3dp);
         % bounding boxes
         vmin = min(x2d, [], 1);
         vmax = max(x2d, [], 1);
