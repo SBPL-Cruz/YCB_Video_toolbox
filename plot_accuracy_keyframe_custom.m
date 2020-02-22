@@ -28,15 +28,24 @@ index_plot = [1];
 
 % results_file = "/media/aditya/A69AFABA9AFA85D9/Cruzr/code/DOPE/catkin_ws/src/perception/sbpl_perception/src/scripts/tools/fat_dataset/model_outputs_test/accuracy_6d_1581795428.txt"
 
-results_file = "./symm_only.csv";
+% results_file = "./symm_icp_max.txt";
+
+% results_file = "./symm_cup.txt";
+
+% good
+% results_file = "./symm_only_new_acc_1.txt"; % best run with all symm objects
+% results_file = "./symm_bowl_mordor.txt"; % bowl with occlusion specific centroid shifting
+% results_file = "./symm_can_2.txt";
+% results_file = "./symm_cup.txt";
+% results_file = "./symm_meat.txt"
 
 % this has 49, 52, 53 done
-% results_file = "./network_pose.txt"
+results_file = "./symm_mustard_pitcher_psc.txt"
 
 fid = fopen(results_file);
 tline = fgetl(fid);
 header = strsplit(tline, ',');
-header = header(2:numel(header));
+header = header(2:numel(header)-1);
 
 num_objects = numel(header)/2;
 distances_sys = zeros(1, num_objects);
