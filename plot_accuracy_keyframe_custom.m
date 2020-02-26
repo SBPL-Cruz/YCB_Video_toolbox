@@ -2,42 +2,36 @@ function plot_accuracy_keyframe
    
     close all;
 
-    % results_file = "/media/aditya/A69AFABA9AFA85D9/Cruzr/code/DOPE/catkin_ws/src/perception/sbpl_perception/src/scripts/tools/fat_dataset/model_outputs_test/accuracy_6d_1581795428.txt"
-
-    % results_file = "./symm_icp_max.txt";
-    % results_file = "./symm_cup.txt";
-
     max_distance = 0.1;
     max_distance_pose = 0.01;
 
     % good 6dof
-    % results_file = "./symm_only_new_acc_1.txt"; % best run with all symm objects
+%     results_file = "./symm_only_new_acc_1.txt"; % best run with all symm objects
     % results_file = "./symm_bowl_mordor.txt"; % bowl with occlusion specific centroid shifting
     % results_file = "./symm_can_2.txt";
     % results_file = "./symm_cup.txt";
     % results_file = "./symm_meat.txt"
-    % results_file = "./marker_latest_mordor.txt"
-    diff = 1;
+%     results_file = "./marker_latest_mordor.txt"
 
     % good 3dof
     % results_file = "./3dof/dope/combined_acc.csv";
     % results_file = "./3dof/perch/combined_acc.csv";
     % results_file = "./3dof/perch2.0/combined_acc.csv";
     % results_file = "./3dof/bf_icp/combined_acc.csv";
-    % results_file = "./3dof/perch2.0-a/combined_acc.csv";
-    diff = 0;
+    results_file = "./3dof/perch2.0-a/combined_acc.csv";
+    
+    
+    [header, distances_sys, distances_non, num_objects] = readFile(results_file);
+    max_plots = 7;
+    makePlots(num_objects, distances_sys, max_distance, max_distance_pose, max_plots, header);
+    
 
+end
+
+function [header, distances_sys, distances_non, num_objects] = readFile(results_file)
     fid = fopen(results_file);
     tline = fgetl(fid);
     header = strsplit(tline, ',');
-    header = header(2:numel(header)-diff);
-
-
-    num_objects = numel(header)/2;
-    distances_sys = zeros(1, num_objects);
-    pose_percentage_sys = zeros(num_objects);
-    distances_non = zeros(1, num_objects);
-    max_plots = 7;
 
     count = 1;
     while ischar(tline)
@@ -60,10 +54,9 @@ function plot_accuracy_keyframe
         count = count + 1;
     end
     fclose(fid);
-
-    makePlots(num_objects, distances_sys, max_distance, max_distance_pose, max_plots, header);
+    num_objects = size(distances_sys, 2);
     
-
+    header = header(2:1 + 2*num_objects);
 end
 
 function [] = makePlots(num_objects, distances_sys, max_distance, max_distance_pose, max_plots, header)
@@ -72,15 +65,12 @@ function [] = makePlots(num_objects, distances_sys, max_distance, max_distance_p
     aps = zeros(5, 1);
     lengs = cell(5, 1);
     index_plot = [1];
-
     
     hf = figure('units','normalized','outerposition',[0 0 1 1]);
     font_size = 24;
     % for each class
     plot_i = 1;
     for k = 1:num_objects
-
-
         % distance symmetry
         i = 1;
         D = distances_sys(:, k);
