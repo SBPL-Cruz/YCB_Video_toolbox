@@ -3,32 +3,64 @@ function plot_accuracy_keyframe
     close all;
 
     max_distance = 0.1;
-    max_distance_pose = 0.01;
+    max_distance_pose = 0.02;
+    
+    % GT Box, everything else same
+    % results_file = "./6dof_exp/cracker.txt"
+    results_file = "./6dof_exp/cracker_gicp_new.txt"
 
+    
+%     
     % good 6dof
-%     results_file = "./symm_only_new_acc_1.txt"; % best run with all symm objects
-    % results_file = "./symm_bowl_mordor.txt"; % bowl with occlusion specific centroid shifting
-    % results_file = "./symm_can_2.txt";
-    % results_file = "./symm_cup.txt";
-    % results_file = "./symm_meat.txt"
-%     results_file = "./marker_latest_mordor.txt"
+%     results_file = "./6dof/scissors_better.txt"
+%         results_file = "./6dof/bleach_better.csv"
+% results_file = "./6dof/052_clamp"
+% results_file = "./6dof/051_large_clamp.txt"
+% results_file = "./6dof/cb_temp"
 
-    % good 3dof
+% results_file = "./6dof/runtim_200";
+%     results_file = "./symm_only_new_acc_1.txt"; % best run with all symm objects
+%     results_file = "./6dof/symm_bowl_mordor.txt"; % bowl with occlusion specific centroid shifting
+%     results_file = "./6dof/symm_can_2.txt";
+%     results_file = "./6dof/symm_cup.txt";
+%     results_file = "./6dof/symm_meat.txt"
+%     results_file = "./6dof/symm_mustard_pitcher_psc.txt"
+%     results_file = "./6dof/symm_foam.txt"
+%     results_file = "./6dof/symm_wood_1.txt"
+%     results_file = "./6dof/drill"
+%     results_file = "./6dof/symm_sugar.txt"
+%    results_file = "./6dof/banana.txt"
+%    results_file = "./6dof/pitcher_base"
+% results_file = "./6dof/symm_gelatin.txt"
+% results_file = "./6dof/clamp" % mask-rcnn
+% results_file = "./6dof/pudding.txt"
+
+    % good 3dof 
+%     method = "perch2.0";
+%     method = "perch";
+%     method = "dsope";
+%     method = "bf_icp";
+%     method = "perch2.0-a";
+%     method = "perch-tree";
     % results_file = "./3dof/dope/combined_acc.csv";
     % results_file = "./3dof/perch/combined_acc.csv";
-    % results_file = "./3dof/perch2.0/combined_acc.csv";
+%     results_file = "./3dof/" + method + "/combined_acc.csv";
     % results_file = "./3dof/bf_icp/combined_acc.csv";
-    results_file = "./3dof/perch2.0-a/combined_acc.csv";
+%     results_file = "./3dof/perch2.0-a/combined_acc.csv";
+%      results_file = "./3dof/perch-tree/combined_acc.csv";
     
     
-    [header, distances_sys, distances_non, num_objects] = readFile(results_file);
-    max_plots = 7;
+    [header, distances_sys, distances_non, distances_sys_all, num_objects] = readFile(results_file);
+    max_plots = 13;
     makePlots(num_objects, distances_sys, max_distance, max_distance_pose, max_plots, header);
-    
+%     output_file = "./3dof/" + method + ".mat";
+%     save(output_file,'distances_sys_all')
+
 
 end
 
-function [header, distances_sys, distances_non, num_objects] = readFile(results_file)
+
+function [header, distances_sys, distances_non, distances_sys_all, num_objects] = readFile(results_file)
     fid = fopen(results_file);
     tline = fgetl(fid);
     header = strsplit(tline, ',');
@@ -45,6 +77,7 @@ function [header, distances_sys, distances_non, num_objects] = readFile(results_
                         distances_non(count, i/2) = str2double(data(i));
                     else
                         distances_sys(count, fix(i/2)) = str2double(data(i));
+                        distances_sys_all(count, 1) = str2double(data(i));
                     end     
                 end
 

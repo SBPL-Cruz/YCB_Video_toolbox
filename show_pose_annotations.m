@@ -74,8 +74,9 @@ for k = 1:num_frames
     title('label image');
     
     % load meta-data
-    filename = fullfile(opt.root, 'data', sprintf('%04d/%06d-meta.mat', seq_id, k));
+    filename = fullfile(opt.root, 'data', sprintf('%04d/%06d-bbox-meta.mat', seq_id, k));
     object = load(filename);
+    object = object.object;
     targets = generate_vertex_targets(label, object.cls_indexes, object.center, object.poses, opt.num_classes);
     
     subplot(3, 3, 4);
@@ -109,6 +110,7 @@ for k = 1:num_frames
     num = numel(object.cls_indexes);
     distances = zeros(num, 1);
     poses = object.poses;
+    bboxes = object.bboxes;
     for j = 1:num
         distances(j) = poses(3, 4, j);
     end
@@ -132,13 +134,18 @@ for k = 1:num_frames
         [rotmat,cornerpoints,volume,surface] = minboundbox(x,y,z,'v',1);
         % disp(x3dp);
         % bounding boxes
-        vmin = min(x2d, [], 1);
-        vmax = max(x2d, [], 1);
-        x1 = max(vmin(1), 0);
-        y1 = max(vmin(2), 0);
-        x2 = min(vmax(1), size(I,2));
-        y2 = min(vmax(2), size(I,1));     
-        
+%         vmin = min(x2d, [], 1);
+%         vmax = max(x2d, [], 1);
+%         x1 = max(vmin(1), 0);
+%         y1 = max(vmin(2), 0);
+%         x2 = min(vmax(1), size(I,2));
+%         y2 = min(vmax(2), size(I,1));     
+        bbox_2d = bboxes(:,:,ind);
+        x1 = bbox_2d(1,1);
+        y1 = bbox_2d(1,2);
+        x2 = bbox_2d(1,3);
+        y2 = bbox_2d(1,4);
+
         % draw
         subplot(3, 3, 7);
         hold on;
