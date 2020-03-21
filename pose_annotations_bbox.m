@@ -41,7 +41,7 @@ if draw == 1
     figure(1);
 end
 
-for seq_id = 68:91
+for seq_id = 68:68
     if seq_id >= 60
         depth2color = opt.depth2color_cmu;
         intrinsic_matrix_color = opt.intrinsic_matrix_color_cmu;
@@ -49,13 +49,17 @@ for seq_id = 68:91
         depth2color = opt.depth2color;
         intrinsic_matrix_color = opt.intrinsic_matrix_color;
     end
-    num_frames = opt.nums(seq_id + 1);
+%     num_frames = opt.nums(seq_id + 1);
+    num_frames = 80000;
     % for each frame
     for k = 1:num_frames
         fprintf('%04d: %06d\n', seq_id, k);
 
         % read image
-        filename = fullfile(opt.root, 'data', sprintf('%04d/%06d-color.png', seq_id, k));
+%         filename = fullfile(opt.root, 'data', sprintf('%04d/%06d-color.png', seq_id, k));
+        
+        filename = fullfile(opt.root, 'data_syn', sprintf('%06d-color.png', k));
+
         I = imread(filename);
         if draw == 1
             subplot(3, 3, 1);

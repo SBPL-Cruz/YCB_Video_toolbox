@@ -5,9 +5,15 @@ function plot_accuracy_keyframe
     max_distance = 0.1;
     max_distance_pose = 0.02;
     
-    % GT Box, everything else same
-    % results_file = "./6dof_exp/cracker.txt"
-    results_file = "./6dof_exp/cracker_gicp_new.txt"
+% GT Box, fast_gicp, stride 8, < 2cm and AUC
+% results_file = "./6dof_exp/fast_gicp/sugar_gicp_new_frob.txt" %98.64, 95.78
+% results_file = "./6dof_exp/fast_gicp/cracker_gicp_new_frob.txt" %99.19, 94.79
+% results_file = "./6dof_exp/fast_gicp/bowl_gicp_new_frob.txt" %100.00, 97.22
+% results_file = "./6dof_exp/fast_gicp/bleach_gicp_new_frob.txt" %98.54, 95.03
+
+% GT Box, fast_vgicp, stride 5, < 2cm and AUC
+% results_file = "./6dof_exp/fast_vgicp/cracker_box.txt" %98.73, 93.41
+
 
     
 %     
